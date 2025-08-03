@@ -17,16 +17,14 @@ router.post('/sign-up', async (req, res) => {
     
     const user = await User.create({
       username: req.body.username,
-      hashedPassword: bcrypt.hashSync(req.body.password, saltRounds)
+      hashedPassword: bcrypt.hashSync(req.body.password, saltRounds),
+      role: req.body.role
     });
 
-    // Construct the payload
     const payload = { username: user.username, _id: user._id };
 
-    // Create the token, attaching the payload
     const token = jwt.sign({ payload }, process.env.JWT_SECRET);
 
-    // Send the token instead of the user
     res.status(201).json({ token });
   } catch (err) {
     res.status(400).json({ err: err.message });
@@ -46,14 +44,9 @@ router.post('/sign-in', async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(401).json({ err: 'Invalid credentials.' });
     }
-
-    // Construct the payload
-    const payload = { username: user.username, _id: user._id };
-
-    // Create the token, attaching the payload
+    const payload = { username: user.username, _id: user._id, role: user.role};
     const token = jwt.sign({ payload }, process.env.JWT_SECRET);
 
-    // Send the token instead of the message
     res.status(200).json({ token });
   } catch (err) {
     res.status(500).json({ err: err.message });
