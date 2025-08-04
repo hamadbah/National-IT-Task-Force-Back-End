@@ -1,4 +1,4 @@
-// models/hoot.js
+
 const mongoose = require('mongoose');
 
 //
