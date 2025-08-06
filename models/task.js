@@ -22,14 +22,19 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    ministry: {
-      type: ObjectId,
-      required: true,
-    },
-    teams: {
-      type: ObjectId,
-      required: true,
-    },
+    ministry: 
+     [
+         {
+           type: mongoose.Schema.Types.ObjectId,
+           ref: 'Task'
+         }
+     ]
+    , teams: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Team'
+      }
+    ]
   }
 );
 
