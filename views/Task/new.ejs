@@ -1,0 +1,62 @@
+
+  <link rel="stylesheet" href="/stylesheet/style.css" />
+  
+   <!-- <div class="card"> -->
+<!-- <div class="book-container">  -->
+    <h1>Add a new Task</h1>
+  <!-- <img src="img_avatar.png" alt="Avatar" style="width:100%"> -->
+  <div class="task-container">
+
+    <p>Task Details</p>
+  </div>
+  <form method="POST" action="/tasks">
+
+    <label for="task">Task's Name:</label>
+    <input type="text" name="taskName" id="task" />
+    <br>
+
+    <label for="description">Description:</label>
+    <textarea name="description" id="description" required></textarea>
+    <br>
+
+    <label for="duration">Duration:</label>
+    <select name="duration" id="duration" required>
+      <option value="1-3 months">1-3 months</option>
+      <option value="3-6 months">3-6 months</option>
+      <option value="6-12 months">6-12 months</option>
+      <option value="1 year or more">1 year or more</option>
+    </select>
+    <br>
+
+    <label for="status">Status:</label>
+    <input type="text" name="status" id="status" required />
+    <br>
+
+    <label for="ministry">Ministry:</label>
+    <input type="text" name="ministry" id="ministry" required />
+    <br>
+
+    <label for="teams">Teams:</label>
+    <input type="text" name="teams" id="teams" required />
+    <br>
+
+
+    <!-- <label for="auther">Auther's Name:</label>
+    <input type="text" name="auther" id="auther" />
+    <br>
+
+    <label for="genre">Genre:</label>
+    <input type="text" name="genre" id="genre" />
+    <br>
+
+    <label for="availability">Available in Bahrain:</label>
+    <input type="checkbox" name="availability" id="availability"  />
+    <br>
+
+    <label for="language">Language:</label>
+    <input type="text" name="language" id="language"  />
+    <br> -->
+
+    <button type="submit">Add a Task</button>
+  </form>
+  

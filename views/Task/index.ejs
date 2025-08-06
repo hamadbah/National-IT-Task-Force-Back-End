@@ -1,0 +1,28 @@
+
+<div class="container"></div>
+
+  <% tasks.forEach(Task => { %>
+  <div class="task-card">
+  <h2> <%= Task.taskName %> </h2>
+  <h3><%= Task.ministry %></h3>
+  <h4><%= Task.duration %></h4>
+  <h4><%= Task.status %></h4>
+  <h4><%= Task.teams %></h4>
+  <h4><%= Task.owner.username %></h4>
+  <h4>Created At: <%= Task.createdAt.toLocaleDateString() %></h4>
+  <h4>Last Updated: <%= Task.updatedAt.toLocaleDateString() %></h4>  
+
+
+
+   <button onclick="window.location.href='/tasks/<%= Task._id %>'">View more details</button>
+</div>
+<% }) %>
+</div>
+
+<div class="button">
+<a href="/tasks/new">Add a new Task</a>
+</div>
+
+
+
+

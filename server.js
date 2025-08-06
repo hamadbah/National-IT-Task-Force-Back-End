@@ -19,10 +19,12 @@ app.use(logger('dev'));
 const testJwtRouter = require('./controllers/test-jwt');
 const authRouter = require('./controllers/auth');
 const userRouter = require('./controllers/users');
+const tasksRouter = require("./controllers/tasks.js");
 
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/test-jwt', testJwtRouter);
+app.use('/tasks', tasksRouter);
 
 app.listen(3000, () => {
   console.log('The express app is ready and running on port 3000!');
