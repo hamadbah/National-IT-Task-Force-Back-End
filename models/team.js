@@ -6,18 +6,14 @@ name: {
     required: true
   },
   speciality: {
-    type: Number,
-    required: true
-  },
-  mobileNo: {
-    type: Number,
-    required: true
-  },
-  email: {
     type: String,
     required: true
   },
-  OpeningHours: {
+  mobileNo: {
+    type: String,
+    required: true
+  },
+  email: {
     type: String,
     required: true
   },
