@@ -1,105 +1,72 @@
-const router = require('express').Router()
+const express = require("express");
+const verifyToken = require("../middleware/verify-token.js");
+const Task = require("../models/task.js");
+const router = express.Router();
 
-const Task = require('../models/task');
-
-// API's/ Routes/ Main Functionality
-
-router.get('/', async(req, res) => {
-  const tasks = await Task.find().populate('owner');
-  res.render('Task/index.ejs', { tasks });
-});
-
-router.get('/new', async (req, res) => {
-  res.render('Task/new.ejs');
-});
-
-//  add task
-router.post('/', async (req, res) => {
-
-  if (req.body.availability === "on") {
-    req.body.availability = true;
-  } else {
-    req.body.availability = false;
+// Get all tasks
+router.get("/", verifyToken, async (req, res) => {
+  try {
+    const tasks = await Task.find();
+    res.status(200).json(tasks);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
   }
-
-  req.body.owner = req.session.user._id;
-  await Task.create(req.body);
-  res.redirect('/tasks');
 });
 
-// router.get("/:taskId", async (req, res) => {
-//   const task = await Task.findById(req.params.taskId).populate('owner');
+// Create a new task
+router.post("/", verifyToken, async (req, res) => {
+  try {
+    const task = await Task.create(req.body);
+    res.status(201).json(task);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
 
-//   const userHasFavorited = task.favoritedByUser.some((user) =>
-//     user.equals(req.session.user._id)
-//   );
-
-//   res.render('Task/show.ejs', { task, userHasFavorited });
-// });
-
-//delete task
-router.delete('/:taskId', async (req, res) => {
+// Get a single task by ID
+router.get("/:taskId", verifyToken, async (req, res) => {
   try {
     const task = await Task.findById(req.params.taskId);
-    if (task.owner.equals(req.session.user._id)) {
-      await task.deleteOne();
-      res.redirect('/tasks');
-    } else {
-      res.send("You don't have permission to do that.");
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
     }
-  } catch (error) {
-    console.error(error);
-    res.redirect('/');
+    res.status(200).json(task);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
   }
 });
 
-// Edit task
-router.get('/:taskId/edit', async (req, res) => {
+// Update a task
+router.put("/:taskId", verifyToken, async (req, res) => {
   try {
-    const currentTask = await Task.findById(req.params.taskId);
-    res.render('Task/edit.ejs', {
-      task: currentTask,
-    });
-  } catch (error) {
-    console.log(error);
-    res.redirect('/');
-  }
-});
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.taskId,
+      req.body,
+      { new: true }
+    );
 
-router.put('/:taskId', async (req, res) => {
-  try {
-
-  if (req.body.availability === "on") {
-    req.body.availability = true;
-  } else {
-    req.body.availability = false;
-  }
-
-    const currentTask = await Task.findById(req.params.taskId);
-    if (currentTask.owner.equals(req.session.user._id)) {
-      await currentTask.updateOne(req.body);
-      res.redirect('/tasks');
-    } else {
-      res.send("You don't have permission to do that.");
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
     }
-  } catch (error) {
-    console.log(error);
-    res.redirect('/tasks');
+
+    res.status(200).json(updatedTask);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
   }
 });
 
-// router.post('/:taskId/favorited-by/:userId', async (req, res) => {
-//   await Task.findByIdAndUpdate(req.params.taskId, {
-//     $push: {favoritedByUser: req.params.userId}
-//   });
-//   res.redirect(`/tasks/${req.params.taskId}`);
-// });
+// Delete a task
+router.delete("/:taskId", verifyToken, async (req, res) => {
+  try {
+    const deletedTask = await Task.findByIdAndDelete(req.params.taskId);
+    if (!deletedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
 
-// router.delete('/:taskId/favorited-by/:userId', async (req, res) => {
-//   await Task.findByIdAndUpdate(req.params.taskId, {
-//     $pull: {favoritedByUser: req.params.userId}
-//   });
-//   res.redirect(`/tasks/${req.params.taskId}`);
-// });
+    res.status(200).json(deletedTask);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
 
 module.exports = router;
