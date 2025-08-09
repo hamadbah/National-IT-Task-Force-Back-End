@@ -20,11 +20,14 @@ const testJwtRouter = require('./controllers/test-jwt');
 const authRouter = require('./controllers/auth');
 const userRouter = require('./controllers/users');
 const teamRouter = require('./controllers/teams');
+const ministryRouter = require('./controllers/ministry');
 
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/test-jwt', testJwtRouter);
 app.use('/teams', teamRouter);
+app.use('/ministries', ministryRouter);
+
 
 app.listen(3000, () => {
   console.log('The express app is ready and running on port 3000!');
