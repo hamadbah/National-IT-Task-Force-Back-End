@@ -69,12 +69,14 @@ router.delete("/:ministryId", verifyToken, async (req, res) => {
   try {
     const ministry = await Ministry.findById(req.params.ministryId);
 
-    if (!ministry.Owner.equals(req.user._id)) {
-      return res.status(403).send("You're not allowed to do that!");
-    }
+    // if (!ministry.Owner.equals(req.user._id)) {
+    //   return res.status(403).send("You're not allowed to do that!");
+    // }
     const deletedMinistry = await Ministry.findByIdAndDelete(req.params.ministryId);
     res.status(200).json(deletedMinistry);
   } catch (err) {
+    console.log(err);
+    
     res.status(500).json({ err: err.message });
   }
 });
