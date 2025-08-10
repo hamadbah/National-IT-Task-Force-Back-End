@@ -34,16 +34,16 @@ router.get('/:ministryId', verifyToken, async (req, res) => {
 
 router.put("/:ministryId", verifyToken, async (req, res) => {
   try {
-    const ministry = await Ministry.findById(req.params.ministryId);
-    if (!ministry.Owner.equals(req.user._id)) {
-      return res.status(403).send("You're not allowed to do that!");
-    }
     const updatedMinistry = await Ministry.findByIdAndUpdate(
       req.params.ministryId,
       req.body,
       { new: true }
     );
-    updatedMinistry = await updatedMinistry.populate('Owner')
+
+    if (!updatedMinistry) {
+      return res.status(404).json({ err: "Ministry not found" });
+    }
+
     res.status(200).json(updatedMinistry);
   } catch (err) {
     res.status(500).json({ err: err.message });

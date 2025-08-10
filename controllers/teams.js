@@ -1,6 +1,7 @@
 const express = require("express");
 const verifyToken = require("../middleware/verify-token.js");
 const Team = require("../models/team.js");
+const Task = require("../models/task.js");
 const router = express.Router();
 
 // Get all teams
@@ -58,10 +59,16 @@ router.put("/:teamId", verifyToken, async (req, res) => {
 // Delete a team member
 router.delete("/:teamId", verifyToken, async (req, res) => {
   try {
+    const teamId = req.params.teamId;
     const deletedTeam = await Team.findByIdAndDelete(req.params.teamId);
     if (!deletedTeam) {
       return res.status(404).json({ message: "Team not found" });
     }
+
+    await Task.updateMany(
+      { teams: teamId },
+      { $pull: { teams: teamId } }
+    );
 
     res.status(200).json(deletedTeam);
   } catch (err) {
