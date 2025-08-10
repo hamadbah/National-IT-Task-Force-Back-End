@@ -3,7 +3,6 @@ const verifyToken = require("../middleware/verify-token.js");
 const Task = require("../models/task.js");
 const router = express.Router();
 
-// Get all tasks
 router.get("/", verifyToken, async (req, res) => {
   try {
     const tasks = await Task.find();
@@ -13,7 +12,6 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
-// Create a new task
 router.post("/", verifyToken, async (req, res) => {
   try {
     const task = await Task.create(req.body);
@@ -23,7 +21,6 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// Get a single task by ID
 router.get("/:taskId", verifyToken, async (req, res) => {
   try {
     const task = await Task.findById(req.params.taskId).populate('ministry');
@@ -36,7 +33,6 @@ router.get("/:taskId", verifyToken, async (req, res) => {
   }
 });
 
-// Update a task
 router.put("/:taskId", verifyToken, async (req, res) => {
   try {
     const updatedTask = await Task.findByIdAndUpdate(
@@ -55,7 +51,6 @@ router.put("/:taskId", verifyToken, async (req, res) => {
   }
 });
 
-// Delete a task
 router.delete("/:taskId", verifyToken, async (req, res) => {
   try {
     const deletedTask = await Task.findByIdAndDelete(req.params.taskId);
