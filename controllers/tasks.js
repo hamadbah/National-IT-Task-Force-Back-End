@@ -26,7 +26,7 @@ router.post("/", verifyToken, async (req, res) => {
 // Get a single task by ID
 router.get("/:taskId", verifyToken, async (req, res) => {
   try {
-    const task = await Task.findById(req.params.taskId);
+    const task = await Task.findById(req.params.taskId).populate('ministry');
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }

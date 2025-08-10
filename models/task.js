@@ -1,8 +1,6 @@
 
 const mongoose = require('mongoose');
 
-//
-
 const taskSchema = new mongoose.Schema(
   {
     name: {
@@ -26,7 +24,7 @@ const taskSchema = new mongoose.Schema(
      [
          {
            type: mongoose.Schema.Types.ObjectId,
-           ref: 'Task'
+           ref: 'Ministry'
          }
      ]
     , teams: [
