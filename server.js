@@ -12,6 +12,7 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+// Control Live Demo
 const allowedOrigins = [
   'http://localhost:5173',
   'https://nationaltf.onrender.com'
